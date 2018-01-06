@@ -1,0 +1,103 @@
+/*顶部导航烂*/
+.layui-layout-admin .layui-header {
+	background-color: #fff;
+	border-bottom: 4px solid #009688;
+}
+.layui-layout-admin .layui-logo {
+	color: #000;
+	font-size: 20px;
+}
+.layui-nav .layui-nav-item a {
+	color: #c2c2c2;
+}
+.layui-nav .top-nav-mes > a:hover {
+	color: #000;
+}
+
+/*左侧导航栏*/
+.layui-layout-admin .layui-side {
+	top: 64px;
+}
+.side-scroll-icon {
+	margin-right: 5px;
+	font-size: 16px;
+}
+
+/*右侧主内容*/
+.layui-layout-admin .layui-body {
+	bottom: 0;
+}
+
+/*用户输入信息部分*/
+.content-left-box {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 35%;
+	height: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	border-right: 1px solid #eeeeee;
+	overflow: auto;
+}
+.input-fieldset {
+	margin-bottom: 0
+}
+
+/*单选框*/
+.method-radio {
+	margin-left: 75px;
+}
+
+/*显示各调度算法结果部分*/
+.content-right-box {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 65%;
+	height: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	overflow: auto;
+}
+
+.method-result {
+	text-align: center;
+}
+
+/**
+ * 进程调度
+ */
+.process-method-radio {
+	margin-left: 2px;
+}
+.print-text/*,
+.process-rtime*/ {
+	font-weight: 700;
+}
+
+.result-collapse {
+	margin: 20px 0;
+	min-height: 105px;
+}
+
+/**
+ * 课设-银行家算法
+ */
+.banker-content-right-box,
+.banker-content-left-box {
+	width: 50%;
+}
+.resources-item {
+	display: inline-block;
+	width: 130px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+.resource-span {
+	display: inline-block;
+	width: 30%;
+}
+.quote-item {
+	margin-top: 20px;
+}

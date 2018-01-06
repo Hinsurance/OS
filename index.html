@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<title>进程调度</title>
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">操作系统实验</div>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item top-nav-mes"><a href="javascript:;"><i class="layui-icon">&#xe613;</i> 3215005220 黄宝贤 计科8班</a></li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="index.html" class="layui-this"><i class="layui-icon side-scroll-icon">&#xe62c;</i>进程调度</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="html/jobScheduling.html"><i class="layui-icon side-scroll-icon">&#xe705;</i>作业调度</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="html/memoryManagement.html"><i class="layui-icon side-scroll-icon">&#xe857;</i>存储管理</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="layui-body">
+			<!-- 内容主体区域 -->
+			<div class="content-left-box">
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend>添加进程</legend>
+					<div class="layui-field-box layui-form">
+						<div class="layui-form-item">
+							<label class="layui-form-label">进程名</label>
+							<div class="layui-input-inline">
+								<input type="text" name="processName" required  lay-verify="required" placeholder="请输入进程名" autocomplete="off" class="layui-input" id="process_name">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">服务时间</label>
+							<div class="layui-input-inline">
+								<input type="text" name="serveTime" required  lay-verify="required|number" placeholder="请输入正整数" autocomplete="off" class="layui-input" id="serve_time">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">优先权</label>
+							<div class="layui-input-inline">
+								<input type="text" name="priority" required lay-verify="required|number" placeholder="请输入正整数" autocomplete="off" class="layui-input" id="priority">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="input_process_btn_btn" id="input_process_btn">提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="clear_btn">清空</button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend>调度算法</legend>
+					<form class="layui-field-box layui-form">
+						<div class="layui-form-item">
+							<label class="layui-form-label">时间片</label>
+							<div class="layui-input-inline">
+								<input type="text" name="timePiece" lay-verify="number" placeholder="请输入时间片" autocomplete="off" class="layui-input" id="time_piece">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block process-method-radio">
+								<input type="radio" name="method" value="FCFS" title="先来先服务" checked id="fcfs_radio">
+								<input type="radio" name="method" value="RR" title="简单轮转法" id="rr_radio">
+								<input type="radio" name="method" value="HRRN" title="静态优先权" id="sp_radio">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="run_btn" id="run_btn">运行</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="clear_all_btn">全部清空</button>
+							</div>
+						</div>
+					</form>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title input-fieldset">
+					<legend>就绪队列</legend>
+					<table class="layui-table method-result">
+						<colgroup>
+							<col width="90">
+							<col width="110">
+							<col width="110">
+							<col width="90">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<td>进程名</td>
+								<td>提交时间</td>
+								<td>服务时间</td>
+								<td>优先数</td>
+								<td>状态</td>
+							</tr>
+						</thead>
+						<tbody id="ready_queue">
+							<tr class="pcb">
+								<td class="pcb-name">P1</td>
+								<td class="pcb-submit-time">1</td>
+								<td class="pcb-serve-time">3</td>
+								<td class="pcb-priority">3</td>
+								<td class="pcb-status">W</td>
+							</tr>
+							<tr class="pcb">
+								<td class="pcb-name">P2</td>
+								<td class="pcb-submit-time">2</td>
+								<td class="pcb-serve-time">1</td>
+								<td class="pcb-priority">1</td>
+								<td class="pcb-status">W</td>
+							</tr>
+							<tr class="pcb">
+								<td class="pcb-name">P3</td>
+								<td class="pcb-submit-time">3</td>
+								<td class="pcb-serve-time">2</td>
+								<td class="pcb-priority">5</td>
+								<td class="pcb-status">W</td>
+							</tr>
+							<tr class="pcb">
+								<td class="pcb-name">P4</td>
+								<td class="pcb-submit-time">4</td>
+								<td class="pcb-serve-time">1</td>
+								<td class="pcb-priority">4</td>
+								<td class="pcb-status">W</td>
+							</tr>
+							<tr class="pcb">
+								<td class="pcb-name">P5</td>
+								<td class="pcb-submit-time">5</td>
+								<td class="pcb-serve-time">5</td>
+								<td class="pcb-priority">2</td>
+								<td class="pcb-status">W</td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+			</div>
+			<div class="content-right-box">
+				<fieldset class="layui-elem-field layui-field-title input-fieldset" id="fcfs">
+					<legend>先来先服务(FCFS)调度结果</legend>
+					<div class="layui-collapse result-collapse" id="fcfs_result"></div>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title input-fieldset" id="rr">
+					<legend>简单轮转法(RR)调度结果 时间片:<span id="show_time_piece"></span></legend>
+					<div class="layui-collapse result-collapse" id="rr_result"></div>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title input-fieldset" id="sp">
+					<legend>静态优先权算法调度结果(优先数越低，优先级越高)</legend>
+					<div class="layui-collapse result-collapse" id="sp_result"></div>
+				</fieldset>
+			</div>			
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="layui/layui.js"></script>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script>
+	//JavaScript代码区域
+	layui.use(['element','form'], function(){
+	  	var element = layui.element,
+	  		form = layui.form;
+	  	window.initElement = function() {
+	  		element.render();
+	  	}
+	  	/*form.on('submit(run_btn)',function() {
+	  		return false;
+	  	})*/
+	});
+	</script>
+	<script type="text/javascript" src="js/processScheduling.js"></script>
+</body>
+</html>

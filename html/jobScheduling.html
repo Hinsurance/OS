@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>作业调度</title>
+	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">操作系统实验</div>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item top-nav-mes"><a href="javascript:;"><i class="layui-icon">&#xe613;</i> 3215005220 黄宝贤 计科8班</a></li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+					<li class="layui-nav-item">
+						<a href="../index.html"><i class="layui-icon side-scroll-icon">&#xe62c;</i>进程调度</a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="jobScheduling.html" class="layui-this"><i class="layui-icon side-scroll-icon">&#xe705;</i>作业调度</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="memoryManagement.html"><i class="layui-icon side-scroll-icon">&#xe857;</i>存储管理</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="layui-body">
+			<!-- 内容主体区域 -->
+			<div class="content-left-box">
+				<fieldset class="layui-elem-field layui-field-title input-fieldset">
+					<legend>添加作业</legend>
+					<form class="layui-field-box layui-form">
+						<div class="layui-form-item">
+							<label class="layui-form-label">作业名称</label>
+							<div class="layui-input-inline">
+								<input type="text" name="jobName" required  lay-verify="required" placeholder="请输入作业名称" autocomplete="off" class="layui-input" id="job_name">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">服务时间</label>
+							<div class="layui-input-inline">
+								<input type="text" name="serveTime" required  lay-verify="required|number" placeholder="请输入正整数" autocomplete="off" class="layui-input" id="serve_time">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="input_job_btn" id="input_job_btn">提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="clear_btn">清空</button>
+							</div>
+						</div>
+					</form>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title input-fieldset">
+					<legend>调度算法</legend>
+					<form class="layui-field-box layui-form">
+						<div class="layui-form-item">
+							<div class="layui-input-block method-radio">
+								<input type="radio" name="method" value="FCFS" title="FCFS" checked id="fcfs_radio">
+								<input type="radio" name="method" value="SJF" title="SJF" id="sjf_radio">
+								<input type="radio" name="method" value="HRRN" title="HRRN" id="hrrn_radio">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="run_btn" id="run_btn">运行</button>
+								<button type="reset" class="layui-btn layui-btn-primary" id="clear_all_btn">全部清空</button>
+							</div>
+						</div>
+					</form>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title input-fieldset">
+					<legend>就绪队列</legend>
+					<table class="layui-table method-result">
+						<colgroup>
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<td>作业名称</td>
+								<td>提交时间</td>
+								<td>服务时间</td>
+								<td>状态</td>
+							</tr>
+						</thead>
+						<tbody id="ready_queue">
+							<tr class="jcb">
+								<td class="jcb-name">JOB1</td>
+								<td class="jcb-submit-time">1</td>
+								<td class="jcb-serve-time">4</td>
+								<td class="jcb-status">W</td>
+							</tr>
+							<tr class="jcb">
+								<td class="jcb-name">JOB2</td>
+								<td class="jcb-submit-time">2</td>
+								<td class="jcb-serve-time">6</td>
+								<td class="jcb-status">W</td>
+							</tr>
+							<tr class="jcb">
+								<td class="jcb-name">JOB3</td>
+								<td class="jcb-submit-time">3</td>
+								<td class="jcb-serve-time">2</td>
+								<td class="jcb-status">W</td>
+							</tr>
+							<tr class="jcb">
+								<td class="jcb-name">JOB4</td>
+								<td class="jcb-submit-time">4</td>
+								<td class="jcb-serve-time">3</td>
+								<td class="jcb-status">W</td>
+							</tr>
+							<tr class="jcb">
+								<td class="jcb-name">JOB5</td>
+								<td class="jcb-submit-time">5</td>
+								<td class="jcb-serve-time">1</td>
+								<td class="jcb-status">W</td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+			</div>
+			<div class="content-right-box">
+				<fieldset class="layui-elem-field layui-field-title input-fieldset">
+					<legend>先来先服务(FCFS)调度结果</legend>
+					<table class="layui-table method-result">
+						<colgroup>
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<td>作业名称</td>
+								<td>提交时间</td>
+								<td>服务时间</td>
+								<td>开始时间</td>
+								<td>完成时间</td>
+								<td>周转时间</td>
+								<td>带权周转时间</td>
+							</tr>
+						</thead>
+						<tbody id="fcfs_result"></tbody>
+					</table>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title input-fieldset">
+					<legend>短作业优先(SJF)调度结果</legend>
+					<table class="layui-table method-result">
+						<colgroup>
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<td>作业名称</td>
+								<td>提交时间</td>
+								<td>服务时间</td>
+								<td>开始时间</td>
+								<td>完成时间</td>
+								<td>周转时间</td>
+								<td>带权周转时间</td>
+							</tr>
+						</thead>
+						<tbody id="sjf_result"></tbody>
+					</table>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title input-fieldset">
+					<legend>高响应比优先(HRRN)调度结果</legend>
+					<table class="layui-table method-result">
+						<colgroup>
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<td>作业名称</td>
+								<td>提交时间</td>
+								<td>服务时间</td>
+								<td>开始时间</td>
+								<td>完成时间</td>
+								<td>周转时间</td>
+								<td>带权周转时间</td>
+							</tr>
+						</thead>
+						<tbody id="hrrn_result"></tbody>
+					</table>
+				</fieldset>
+			</div>		
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="../layui/layui.js"></script>
+	<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+	<script>
+	//JavaScript代码区域
+	layui.use(['element','form'], function(){
+	  	var element = layui.element,
+	  		form = layui.form;
+
+	  	// form.on('submit(run_btn)',function() {
+	  	// 	return false;
+	  	// })
+	});
+	</script>
+	<script type="text/javascript" src="../js/jobScheduling.js"></script>
+</body>
+</html>
