@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<title>银行家算法</title>
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">操作系统课设</div>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item top-nav-mes"><a href="javascript:;"><i class="layui-icon">&#xe613;</i> 3215005220 黄宝贤 计科8班</a></li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="index.html" class="layui-this"><i class="layui-icon side-scroll-icon">&#xe63d;</i>银行家算法</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="layui-body">
+			<!-- 内容主体区域 -->
+			<div class="content-left-box banker-content-left-box">
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend>请求资源</legend>
+					<form class="layui-field-box layui-form">
+						<div class="layui-form-item">
+							<label class="layui-form-label">请求的进程</label>
+							<div class="layui-input-inline">
+								<select name="process" lay-verify="required" id="process"></select>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">请求的资源</label>
+							<div class="layui-input-block" id="request_resources_input"></div>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="input_btn" id="submit_btn">确定</button>
+								<button type="reset" class="layui-btn layui-btn-primary">清空</button>
+							</div>
+						</div>
+					</form>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend>初始资源分配表</legend>
+					<table class="layui-field-box layui-table method-result" id="initial_table"></table>
+				</fieldset>
+			</div>
+			<div class="content-right-box banker-content-right-box">
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend class="success-result">成功分配时的结果</legend>
+					<div id="success_result"></div>
+				</fieldset>
+			</div>			
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="layui/layui.js"></script>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script>
+	//JavaScript代码区域
+	layui.use(['element','form','layer'], function(){
+	  	var element = layui.element,
+	  		form = layui.form,
+	  		layer = layui.layer;
+	  	/*window.initElement = function() {
+	  		element.render();
+	  	}*/
+	  	form.on('submit(input_btn)',function() {
+	  		return false;
+	  	})
+	});
+	</script>
+	<script type="text/javascript" src="bankerdata.js"></script>
+	<script type="text/javascript" src="js/bankerAlgorithm.js" charset="utf-8"></script>
+</body>
+</html>

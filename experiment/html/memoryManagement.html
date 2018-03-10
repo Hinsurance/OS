@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>存储管理</title>
+	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">操作系统实验</div>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item top-nav-mes"><a href="javascript:;"><i class="layui-icon">&#xe613;</i> 3215005220 黄宝贤 计科8班</a></li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+					<li class="layui-nav-item">
+						<a href="../index.html"><i class="layui-icon side-scroll-icon">&#xe62c;</i>进程调度</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="jobScheduling.html"><i class="layui-icon side-scroll-icon">&#xe705;</i>作业调度</a>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="memoryManagement.html" class="layui-this"><i class="layui-icon side-scroll-icon">&#xe857;</i>存储管理</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="layui-body">
+			<!-- 内容主体区域 -->
+			<div class="content-left-box memory-content-left-box">
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend>操作</legend>
+					<form class="layui-field-box layui-form layui-clear">
+						<div class="layui-form-item layui-clear">
+							<input type="radio" name="memoryMethod" value="FF" title="首次适应" checked>
+							<input type="radio" name="memoryMethod" value="NF" title="循环首次适应">
+							<input type="radio" name="memoryMethod" value="BF" title="最佳适应">
+							<input type="radio" name="memoryMethod" value="WF" title="最坏适应">
+						</div>
+						<!-- <div class="layui-form-item">
+							<button class="layui-btn layui-btn-primary">随机生成空闲分区</button>
+							<button class="layui-btn layui-btn-primary">随机生成作业</button>
+						</div> -->
+						<div class="layui-form-item">
+							<button class="layui-btn" lay-filter="start_btn" id="start_btn">开始分配</button>
+							<button class="layui-btn layui-btn-primary" id="recycle_btn">回收资源</button>
+							<!-- <button class="layui-btn">二次分配</button> -->
+							<button class="layui-btn layui-btn-primary" id="reset_btn">重置</button>
+						</div>
+					</form>
+				</fieldset>
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend>空闲分区表 <small>不再切割的剩余分区大小:1</small></legend>
+					<table class="layui-field-box layui-table method-result">
+						<colgroup>
+							<col width="100">
+							<col width="150">
+							<col width="150">
+							<!-- <col width="100"> -->
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<td>序号</td>
+								<td>分区大小</td>
+								<td>分区始址</td>
+								<td>状态</td>
+							</tr>
+						</thead>
+						<tbody id="memory_block_table_tbody">
+							<!-- <tr>
+								<td>1</td>
+								<td>80</td>
+								<td>85</td>
+								<td>空闲</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>32</td>
+								<td>175</td>
+								<td>空闲</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>70</td>
+								<td>275</td>
+								<td>空闲</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>60</td>
+								<td>532</td>
+								<td>空闲</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>55</td>
+								<td>603</td>
+								<td>空闲</td>
+							</tr> -->
+							<!-- <tr>
+								<td>6</td>
+								<td>76</td>
+								<td>76</td>
+								<td>37</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>66</td>
+								<td>66</td>
+								<td>67</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>28</td>
+								<td>28</td>
+								<td>42</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>71</td>
+								<td>71</td>
+								<td>78</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>12</td>
+								<td>12</td>
+								<td>9</td>
+								<td></td>
+							</tr> -->
+						</tbody>
+					</table>
+				</fieldset>
+			</div>
+			<div class="content-right-box memory-content-right-box">
+				<fieldset class="layui-elem-field layui-field-title">
+					<legend>作业情况</legend>
+					<table class="layui-field-box layui-table method-result">
+						<colgroup>
+							<!-- <col width="100">
+							<col width="150">
+							<col width="150">
+							<col> -->
+							<col width="100">
+							<col width="100">
+							<col width="100">
+							<col width="130">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<td>作业序号</td>
+								<td>作业大小</td>
+								<td>状态</td>
+								<td>内存起始地址</td>
+								<td>分配内存大小</td>
+							</tr>
+						</thead>
+						<tbody  id="job_table_tbody">
+							<!-- <tr>
+								<td>1</td>
+								<td>24</td>
+								<td>未分配</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>80</td>
+								<td>未分配</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>55</td>
+								<td>未分配</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>3</td>
+								<td>未分配</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>28</td>
+								<td>未分配</td>
+								<td></td>
+							</tr> -->
+							<!-- <tr>
+								<td>6</td>
+								<td>81</td>
+								<td></td>
+								<td>N</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>43</td>
+								<td></td>
+								<td>N</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>3</td>
+								<td></td>
+								<td>N</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>67</td>
+								<td></td>
+								<td>N</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>93</td>
+								<td></td>
+								<td>N</td>
+							</tr> -->
+						</tbody>
+					</table>
+				</fieldset>
+			</div>		
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="../layui/layui.js"></script>
+	<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+	<script>
+	//JavaScript代码区域
+	layui.use(['element','form'], function(){
+	  	var element = layui.element,
+	  		form = layui.form;
+
+	  	form.on('submit',function() {
+	  		return false;
+	  	})
+	});
+	</script>
+	<script type="text/javascript" src="../js/memoryManagement.js"></script>
+</body>
+</html>
